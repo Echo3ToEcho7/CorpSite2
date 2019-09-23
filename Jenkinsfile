@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('CI') {
             steps {
-                //snDevOpsStep()
+                snDevOpsStep()
                 sh '''
                     export M2_HOME=/opt/apache-maven-3.6.0 # your Mavan home path
                     export PATH=$PATH:$M2_HOME/bin
