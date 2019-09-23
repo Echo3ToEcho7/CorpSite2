@@ -30,7 +30,7 @@ pipeline {
                     mvn --version
                 '''
                 sh 'mvn package'
-
+/*
                 script {
                     sshPublisher(continueOnError: false, failOnError: true,
                     publishers: [
@@ -47,6 +47,7 @@ pipeline {
                         )
                     ])
                 }
+*/
             }
         }
         stage('UAT test') {        
@@ -86,6 +87,7 @@ pipeline {
             steps {
                 snDevOpsStep()
                 snDevOpsChange()
+                /*
                 script {                
                     sshPublisher(continueOnError: false, failOnError: true,
                     publishers: [
@@ -102,6 +104,7 @@ pipeline {
                         )
                     ])
                 }
+                */
             }
         }
     }
