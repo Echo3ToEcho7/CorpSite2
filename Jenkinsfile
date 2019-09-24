@@ -23,7 +23,7 @@ pipeline {
         }
         stage('UAT deploy') {
             steps {
-                //snDevOpsStep()
+                snDevOpsStep()
                 sh '''
                     export M2_HOME=/opt/apache-maven-3.6.0 # your Mavan home path
                     export PATH=$PATH:$M2_HOME/bin
@@ -52,7 +52,7 @@ pipeline {
         }
         stage('UAT test') {        
             steps {
-                //snDevOpsStep()
+                snDevOpsStep()
                 sh '''
                     export M2_HOME=/opt/apache-maven-3.6.0 # your Mavan home path
                     export PATH=$PATH:$M2_HOME/bin
@@ -67,6 +67,7 @@ pipeline {
                     mvn --version
                 '''
                 sh 'mvn compile'
+                /*
                 sh '''
                     mvn sonar:sonar \
                     -Dsonar.projectKey=CorpSite \
@@ -76,6 +77,7 @@ pipeline {
                     -Dsonar.analysis.scm=$GIT_COMMIT \
                     -Dsonar.analysis.buildURL=$BUILD_URL
                 '''
+                */
             }
             post {
                 success {
@@ -86,7 +88,7 @@ pipeline {
         stage('PROD') {
             steps {
                 snDevOpsStep()
-                //snDevOpsChange()
+                snDevOpsChange()
                 /*
                 script {                
                     sshPublisher(continueOnError: false, failOnError: true,
