@@ -1,4 +1,8 @@
 pipeline {
+    parameters {
+        booleanParam(defaultValue: false, description: '', name: 'Production Build')
+        string(defaultValue: '', description: '', name: 'Commit SHA', trim: true)])
+    }
     agent any
     tools { 
         maven 'Jenkins Maven' 
