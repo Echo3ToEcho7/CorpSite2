@@ -22,7 +22,7 @@ public class WelcomeController {
     }
 
     public String getMessage() {
-        return "we're not evil";
+        return "we're not evil"; // or are we
     }
 
 }
