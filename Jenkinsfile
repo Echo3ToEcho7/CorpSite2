@@ -1,7 +1,7 @@
 pipeline {
     parameters {
         booleanParam(defaultValue: false, description: '', name: 'Production Build')
-        string(defaultValue: '', description: '', name: 'Commit SHA', trim: true)])
+        string(defaultValue: '', description: '', name: 'Commit SHA', trim: true)
     }
     agent any
     tools { 
