@@ -1,0 +1,62 @@
+pipeline {
+    agent any
+    tools { 
+        maven 'Jenkins Maven' 
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                snDevOpsStep()
+                sh '''
+                    export M2_HOME=/opt/apache-maven-3.6.0 # your Mavan home path
+                    export PATH=$PATH:$M2_HOME/bin
+                    mvn --version
+                '''
+                sh 'mvn compile'   
+            }
+        }
+
+        stage('Test') {
+            steps {
+                snDevOpsStep()
+                sh '''
+                    export M2_HOME=/opt/apache-maven-3.6.0 # your Mavan home path
+                    export PATH=$PATH:$M2_HOME/bin
+                    mvn --version
+                '''
+
+                sh 'mvn verify'
+
+                script {
+                    sshPublisher(continueOnError: false, failOnError: true,
+                    publishers: [
+                        sshPublisherDesc(
+                            configName:'CorpSite UAT',
+                            verbose: true,
+                            transfers: [
+                                sshTransfer(
+                                    sourceFiles: 'target/globex-web.war',
+                                    removePrefix: 'target/',
+                                    remoteDirectory: '/opt/tomcat/webapps'
+                                )
+                            ]
+                        )
+                    ])
+                }
+            }
+            post {
+                success {
+                    junit '**/target/surefire-reports/*.xml' 
+                }
+            }
+        }
+
+        stage('Publish') {
+            steps {
+                snDevOpsStep()
+                snDevOpsArtifact(artifactsPayload:"""{"artifacts": [{"name": "globex-web.war","version":"2.${env.BUILD_NUMBER}.0","semanticVersion": "2.${env.BUILD_NUMBER}.0","repositoryName": "Repo1"}]}""")
+            }
+        }
+    }
+}
